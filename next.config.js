@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["tailwindui.com", "www.dangquangwatch.vn"],
+    domains: ["tailwindui.com", "www.dangquangwatch.vn", "cdn.watchstore.vn"],
   },
 };
 
