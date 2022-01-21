@@ -16,11 +16,13 @@ export interface PaymentUserT {
   diaChi: string;
   sdt: string;
   gioiTinh: string;
+  dvVanChuyen?: string;
 }
 
 export default function Payment({}: Props): ReactElement {
   const [user, setUser] = useState<ApiUserT>();
   const { cart, setCart } = useContext(CartContext);
+  const [showModal, setShowModal] = useState(false);
 
   const formik = useFormik<PaymentUserT>({
     initialValues: {
@@ -29,6 +31,7 @@ export default function Payment({}: Props): ReactElement {
       diaChi: "",
       gioiTinh: "",
       sdt: "",
+      dvVanChuyen: "",
     },
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -36,6 +39,7 @@ export default function Payment({}: Props): ReactElement {
   });
 
   const onSubmit = () => {
+    setShowModal(true);
     console.log(formik?.values);
   };
 
@@ -161,7 +165,18 @@ export default function Payment({}: Props): ReactElement {
                     value={formik.values.diaChi}
                     className="w-full px-2 pb-1.5 text-primary outline-none text-base font-light rounded-md border-b-2"
                   />
-
+                  <label>Dich Vu van chuyen</label>
+                  <select
+                    id="dvVanChuyen"
+                    name="dvVanChuyen"
+                    // type="dvVanChuyen"
+                    onChange={formik.handleChange}
+                    value={formik.values.dvVanChuyen}
+                    className="w-full h-12 px-2 pb-1.5 text-primary outline-none text-base font-light rounded-md border-b-2"
+                  >
+                    <option value="1">Dich vu 1</option>
+                    <option value="2">Dich vu 2</option>
+                  </select>
                   {/*  */}
                 </form>
               </div>
@@ -271,6 +286,24 @@ export default function Payment({}: Props): ReactElement {
             </div>
           </div>
         </div>
+        {/* Motal */}
+
+        {showModal ? (
+          <div className="bg-slate-800 bg-opacity-50 flex justify-center items-center absolute top-0 right-0 bottom-0 left-0">
+            <div className="bg-white px-16 py-14 rounded-md text-center">
+              <h1 className="text-xl mb-4 font-bold text-slate-500">
+                Success!
+              </h1>
+
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-red-500 px-7 py-2 ml-2 rounded-md text-md text-white font-semibold"
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        ) : null}
       </div>
       <Footer />
     </>

@@ -16,12 +16,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body: ThanhToanT = req.body;
+  console.log(body.nguoiDung);
   const response = await conn?.query(
-    'insert into "donHang" ("idNguoiDung", "diaChiNhan", "dvVanChuyen") values ($1, $2, $3) returning "idDongHo"',
-    [body.nguoiDung.idNguoiDung, body.diaChiNhan, body.dvVanChuyen]
+    'insert into "donHang" ("idNguoiDung", "diaChiNhan", "dvVanChuyen") values ($1, $2, $3) returning "idDonHang"',
+    [body.nguoiDung?.idNguoiDung, body.diaChiNhan, body.dvVanChuyen]
   );
   body.cart.forEach((item) =>
-    conn?.query('insert into "order_items" ("idDonHang", "soLuong", ) values ')
+    conn?.query(
+      'insert into "order_items" ("idDonHang","idLoaiDongHo" , "soLuong", ) values ($1, $2, $3)',
+
+      [response?.rows[0], item.idLoaiDongHo, item.num]
+    )
   );
   res.status(200).json({
     success: true,
